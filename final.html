@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form</title>
+</head>
+<style>
+    .b{
+        color: green;
+    }
+</style>
+<body>
+  <form id="form">
+    <h1>FORM</h1>
+    <p>
+    <label for="email">Email:</label>
+    <input type="email" id="email" required><br></p>
+    <p>
+    <label for="password">Password:</label>
+    <input type="password" id="password" required><br>
+</p>
+<p>
+    <button class=b type="submit" id="submit">Submit</button>
+</p>
+  </form>
+
+  <script>
+    document.getElementById('form').addEventListener('submit', function(event) {
+      event.preventDefault(); 
+
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+
+      var payload = {
+        email: email,
+        password: password
+      };
+
+      fetch('https://reqres.in/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(function(response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error: ' + response.status);
+        }
+      })
+      .then(function(data) {
+        console.log(data); 
+        document.getElementById('form').reset();
+      })
+      .catch(function(error) {
+        console.error(error); 
+      });
+    });
+  </script>
+</body>
+</html>
